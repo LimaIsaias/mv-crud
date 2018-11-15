@@ -51,7 +51,7 @@ public class Pessoa implements Serializable {
 	private Date dataNascimento;
 	
 	@OneToMany(mappedBy = "pessoa", 
-			fetch = FetchType.EAGER, 
+			fetch = FetchType.LAZY, 
 			cascade = { CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE })
 	private List<Telefone> telefones;
 

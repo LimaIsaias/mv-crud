@@ -12,10 +12,11 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
 @Table(name = "telefone")
@@ -38,10 +39,22 @@ public class Telefone implements Serializable{
 	@Size(min = 8, max = 9)
 	private String numero;
 	
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "pessoa_id")
 	private Pessoa pessoa;
 	
+	public Telefone() {
+	}
+	
+	public Telefone(String ddd, String numero, Pessoa pessoa) {
+		super();
+		this.ddd = ddd;
+		this.numero = numero;
+		this.pessoa = pessoa;
+	}
 
+	@JsonIgnore
+	public Pessoa getPessoa() {
+		return pessoa;
+	}
 }
