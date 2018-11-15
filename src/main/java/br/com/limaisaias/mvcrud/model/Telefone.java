@@ -28,7 +28,7 @@ public class Telefone implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long codigo;
+	private Long id;
 	
 	@NotBlank
 	@Size(min = 2, max = 3)
