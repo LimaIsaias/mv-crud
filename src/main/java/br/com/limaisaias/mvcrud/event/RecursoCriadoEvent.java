@@ -13,12 +13,12 @@ public class RecursoCriadoEvent extends ApplicationEvent {
 	@Getter
 	private HttpServletResponse response;
 	@Getter
-	private Long codigo;
+	private Long id;
 
-	public RecursoCriadoEvent(Object source, HttpServletResponse response, Long codigo) {
+	public RecursoCriadoEvent(Object source, HttpServletResponse response, Long id) {
 		super(source);
 		this.response = response;
-		this.codigo = codigo;
+		this.id = id;
 	}
 
 }
