@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import br.com.limaisaias.mvcrud.model.Pessoa;
 import br.com.limaisaias.mvcrud.repository.PessoaRepository;
@@ -45,8 +46,7 @@ public class PessoaService {
 	}
 
 	private boolean containsTelefone(Pessoa pessoa, Long id) {
-		Long count = pessoa.getTelefones().stream().filter(tp -> tp.getId().equals(id)).count();
-		return count == 0;
+		return !ObjectUtils.isEmpty(pessoa.getTelefones());
 	}
 
 	private void salvarNovosTelefones(Pessoa pessoa) {
