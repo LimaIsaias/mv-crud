@@ -6,7 +6,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import br.com.limaisaias.mvcrud.model.Pessoa;
 import br.com.limaisaias.mvcrud.repository.PessoaRepository;
@@ -26,8 +25,7 @@ public class PessoaService {
 		Pessoa pessoaSalva = pessoaRepository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException(1));
 		BeanUtils.copyProperties(pessoa, pessoaSalva, "id");
 		excluirTelefones(pessoa, pessoaSalva);
-		salvarNovosTelefones(pessoa);
-		return pessoaRepository.save(pessoaSalva);
+		return save(pessoaSalva);
 	}
 
 	@Transactional
@@ -41,18 +39,9 @@ public class PessoaService {
 	/*********/
 
 	private void excluirTelefones(Pessoa pessoa, Pessoa pessoaSalva) {
-		pessoaSalva.getTelefones().stream().filter(tel -> containsTelefone(pessoa, tel.getId()))
-				.forEach(tel -> telefoneRepository.delete(tel));
-	}
-
-	private boolean containsTelefone(Pessoa pessoa, Long id) {
-		return !ObjectUtils.isEmpty(pessoa.getTelefones());
-	}
-
-	private void salvarNovosTelefones(Pessoa pessoa) {
-		pessoa.getTelefones().forEach(tel -> {
-			tel.setPessoa(pessoa);
-			tel = telefoneRepository.save(tel);
-		});
+		if (null != pessoaSalva.getTelefones() && !pessoaSalva.getTelefones().isEmpty()) {
+			pessoaSalva.getTelefones().stream().filter(tel -> !pessoa.getTelefones().contains(tel))
+					.forEach(telRemove -> telefoneRepository.delete(telRemove));
+		}
 	}
 }
